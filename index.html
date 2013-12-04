@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <! --<meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        -->
+        <title>Hello World</title>
+        <script src="lib/easeljs-0.7.0.min.js"></script>
+        <script type="text/javascript">
+          			
+          window.onload = function()
+          {
+                // Create a canvas and draw something in it.
+                var canvas = document.createElement("canvas");
+                canvas.width = 640;
+                canvas.height = 480;
+                var canvasContext2D = canvas.getContext("2d");
+                canvasContext2D.fillStyle = "white";
+                
+                canvasContext2D.fillRect(0, 0, canvas.width, canvas.height);
+                document.body.appendChild(canvas);
+          
+                var tag_left = new createjs.Bitmap("img/logo.png");				  
+                var tag_right = new createjs.Bitmap("img/cordova.png");
+                //var tag_left = new createjs.Bitmap("img/tag_left.svg");				  
+                //var tag_right = new createjs.Bitmap("img/tag_right.svg");
+					
+                
+								var stage = new createjs.Stage("canvas");
+								
+								stage.addChild(tag_left.setTransform(100,100));
+								//var bounds = tag_left.getBounds(); 
+								//stage.addChild(tag_right.setTransform(100+bounds.width-50,100));
+
+								//stage.addChild(tag_left.clone().setTransform(100,200));
+								//stage.addChild(tag_right.clone().setTransform(100+bounds.width-50,200));
+
+
+								// stage.addChild(new createjs.Shape()).setTransform(100,100).graphics.f("red").dc(0,0,50);
+								stage.update();
+								
+								window.onresize = function() {
+				    				var canvas = document.getElementById("canvas");
+				    				canvas.width = window.innerWidth;
+				    				canvas.height = window.innerHeight;
+				    				stage.update();
+								}
+								
+								window.onresize();
+
+				}
+
+				
+				function changeOrientation() {
+    				switch (window.orientation) {
+        			case 0:
+            		// portrait, home bottom
+        			case 180:
+            		// portrait, home top
+            		alert("portrait H: " + $(window).height() + " W: " + $(window).width());
+            		return false;
+        			case -90:
+            		// landscape, home left
+        			case 90:
+            		// landscape, home right
+            		alert("landscape H: " + $(window).height() + " W: " + $(window).width());
+            		return false;
+    				}
+				}
+
+				window.onorientationchange = function () {
+    				//Need at least 800 milliseconds
+    				setTimeout(changeOrientation, 1000);
+				}				
+				
+
+			</script>
+    </head>
+</html>
