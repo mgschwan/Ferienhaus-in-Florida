@@ -1,0 +1,1 @@
+cards_data = [{"name":"Villa Artistica","price":1100,"bedrooms":4,"bathrooms":3,"image":"artistica-front.jpg"},{"name":"Villa Amadeus","price":1200,"bedrooms":3.5,"bathrooms":3,image:"capeharbourpearl-front.jpg"}];

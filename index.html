@@ -19,48 +19,61 @@
 -->
 <html>
     <head>
-        <! --<meta charset="utf-8" />
+        <!-- <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         -->
         <title>Hello World</title>
+        <script src="lib/jquery.js"></script>
         <script src="lib/easeljs-0.7.0.min.js"></script>
+        
+        <script src="js/card.js"></script>
+        <script src="data/cards.json"></script>
+        
         <script type="text/javascript">
-          			
+                
+          var all_cards;
           window.onload = function()
           {
+                all_cards = loadCards(cards_data /* stored in cards.json */);
+
                 // Create a canvas and draw something in it.
+                
                 var canvas = document.createElement("canvas");
-                canvas.width = 640;
+                canvas.id="gamescreen";
+                canvas.width = 800;
                 canvas.height = 480;
-                var canvasContext2D = canvas.getContext("2d");
+                /*var canvasContext2D = canvas.getContext("2d");
                 canvasContext2D.fillStyle = "red";
-                
                 canvasContext2D.fillRect(0, 0, canvas.width, canvas.height);
-                document.body.appendChild(canvas);
-          
-                var tag_left = new createjs.Bitmap("img/logo.png");				  
-                var tag_right = new createjs.Bitmap("img/cordova.png");
-                //var tag_left = new createjs.Bitmap("img/tag_left.svg");				  
-                //var tag_right = new createjs.Bitmap("img/tag_right.svg");
-					
+                */
+                document.body.appendChild(canvas);               
+                var tag_left = new createjs.Bitmap("img/tag_left.svg");				  
+                var tag_right = new createjs.Bitmap("img/tag_right.svg");
                 
-								var stage = new createjs.Stage("canvas");
-								
-								stage.addChild(tag_left.setTransform(100,100));
-								//var bounds = tag_left.getBounds(); 
-								//stage.addChild(tag_right.setTransform(100+bounds.width-50,100));
+                
+								var stage = new createjs.Stage("gamescreen");
+                stage.addChild(all_cards[0].getImage().clone());
+								stage.addChild(tag_left.setTransform(5,5));
+								var bounds = tag_left.getBounds(); 
 
-								//stage.addChild(tag_left.clone().setTransform(100,200));
-								//stage.addChild(tag_right.clone().setTransform(100+bounds.width-50,200));
+								stage.addChild(tag_left.clone().setTransform(5,200));
+								stage.addChild(tag_right.clone().setTransform(5+bounds.width-50,200));
 
 
-								// stage.addChild(new createjs.Shape()).setTransform(100,100).graphics.f("red").dc(0,0,50);
+                var vname = new createjs.Text(all_cards[0].getName(),"bold 32px Arial","#e7e7e7").setTransform(20,25);
+                stage.addChild(vname);
+                var vbathrooms_label = new createjs.Text("Bathrooms","bold 32px Arial","#e7e7e7").setTransform(20,220);
+                stage.addChild(vbathrooms_label);
+								var vbathrooms = new createjs.Text(all_cards[0].getBathrooms(),"bold 32px Arial","#e7e7e7").setTransform(225,220);
+                stage.addChild(vbathrooms);
 								stage.update();
 								
+                
+                
 								window.onresize = function() {
-				    				var canvas = document.getElementById("canvas");
+				    				var canvas = document.getElementById("gamescreen");
 				    				canvas.width = window.innerWidth;
 				    				canvas.height = window.innerHeight;
 				    				stage.update();
