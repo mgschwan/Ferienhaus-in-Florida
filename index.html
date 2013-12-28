@@ -19,24 +19,25 @@
 -->
 <html>
     <head>
-        <!-- <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
+        <meta charset="utf-8" />
+        <!-- <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         -->
-        <title>Hello World</title>
+        <title>Ferienhaus in Florida</title>
         <script src="lib/jquery.js"></script>
         <script src="lib/easeljs-0.7.0.min.js"></script>
         
+        <!-- Game related includes -->
         <script src="js/card.js"></script>
         <script src="data/cards.json"></script>
+        <script src="js/gamefield.js"></script>
         
         <script type="text/javascript">
                 
           var all_cards;
           window.onload = function()
           {
-                all_cards = loadCards(cards_data /* stored in cards.json */);
 
                 // Create a canvas and draw something in it.
                 
@@ -53,21 +54,10 @@
                 var tag_right = new createjs.Bitmap("img/tag_right.svg");
                 
                 
-								var stage = new createjs.Stage("gamescreen");
-                stage.addChild(all_cards[0].getImage().clone());
-								stage.addChild(tag_left.setTransform(5,5));
-								var bounds = tag_left.getBounds(); 
-
-								stage.addChild(tag_left.clone().setTransform(5,200));
-								stage.addChild(tag_right.clone().setTransform(5+bounds.width-50,200));
-
-
-                var vname = new createjs.Text(all_cards[0].getName(),"bold 32px Arial","#e7e7e7").setTransform(20,25);
-                stage.addChild(vname);
-                var vbathrooms_label = new createjs.Text("Bathrooms","bold 32px Arial","#e7e7e7").setTransform(20,220);
-                stage.addChild(vbathrooms_label);
-								var vbathrooms = new createjs.Text(all_cards[0].getBathrooms(),"bold 32px Arial","#e7e7e7").setTransform(225,220);
-                stage.addChild(vbathrooms);
+								stage = new createjs.Stage("gamescreen");
+                
+                gamefield = new gamefield();
+                gamefield.displayCard(0,stage);
 								stage.update();
 								
                 
