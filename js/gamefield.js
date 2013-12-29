@@ -1,35 +1,67 @@
-function gamefield()
+function gamefield(preloadQueue, width, height, stage)
 {
-  this.all_cards = loadCards(cards_data /* stored in cards.json */);
-
-  this.cardImage = null;
-  this.texts = [];
-
+  
+  this.preloadQueue = preloadQueue;
+  this.all_cards = loadCards(cards_data /* stored in cards.json */, this.preloadQueue);
+  this.width = width;
+  this.height = height;
+  preloadQueue.loadFile("img/frontscreen.png");
+  preloadQueue.loadFile("img/startbutton.png");
+  this.frontscreen=new createjs.Bitmap("img/frontscreen.png");
+  this.startbutton=new createjs.Bitmap("img/startbutton.png");
+  
+  this.stage = stage;
+    
   /* Display card number cardNr on stage */
   this.displayCard = function(cardNr, stage) {
-    if (this.cardImage != null) stage.removeChild(this.cardImage);
-    for (var t in this.texts)
-    {
-      stage.removeChild(this.texts[t]);
-    }
-
+    stage.removeAllChildren();
     var card = this.all_cards[cardNr];
-    this.cardImage = card.getImage();
-    stage.addChild(this.cardImage);
-    this.texts.push(new createjs.Text(card.getName(),"bold 24px Arial","#333333").setTransform(22,27));
-    this.texts.push(new createjs.Text(card.getName(),"bold 24px Arial","#e7e7e7").setTransform(20,25));
-        
-    this.texts.push(new createjs.Text("Bathrooms: "+this.all_cards[cardNr].getBathrooms(),"bold 24px Arial","#333333").setTransform(22,62));
-    this.texts.push(new createjs.Text("Bathrooms: "+this.all_cards[cardNr].getBathrooms(),"bold 24px Arial","#e7e7e7").setTransform(20,60));
-    this.texts.push(new createjs.Text("Bedrooms: "+this.all_cards[cardNr].getBedrooms(),"bold 24px Arial","#333333").setTransform(22,102));
-    this.texts.push(new createjs.Text("Bedrooms: "+this.all_cards[cardNr].getBedrooms(),"bold 24px Arial","#e7e7e7").setTransform(20,100));
-    this.texts.push(new createjs.Text("Price: "+this.all_cards[cardNr].getPrice(),"bold 24px Arial","#333333").setTransform(22,142));
-    this.texts.push(new createjs.Text("Price: "+this.all_cards[cardNr].getPrice(),"bold 24px Arial","#e7e7e7").setTransform(20,140));
-
-    for (var t in this.texts)
-    {
-      stage.addChild(this.texts[t]); 
-    }
+    card.display(stage, this.width, this.height);
   }
+  
+  this.displayDualCard = function(cardNr1, cardNr2, stage) {
+    stage.removeAllChildren();
+    var card1 = this.all_cards[cardNr1];
+    var card2 = this.all_cards[cardNr2];
+    card1.display(stage,this.width,this.height);
+    card2.displaySemi(stage,this.width,this.height);
+  }
+  
+  this.displayFrontscreen = function(stage) {
+    stage.removeAllChildren();
+    stage.addChild(scaleToFit(this.frontscreen, this.width, this.height));
+    var button = scaleToFit(this.startbutton, this.width/5, this.height/5).setTransform(this.width/2-this.width/10,(1.3*this.height/2)-this.height/10);
+    button.alpha=0.8;
+    button.set({"name":"start"});
+    button.removeAllEventListeners();
+    console.log("Add event listener");
+    button.addEventListener("click", this);
+    stage.addChild(button);
+  }
+  
+  
+  
+  
+  this.resize = function(width,height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  
+  this.handleEvent = function(event){
+    if (event.target.name==null){
+      this.displayDualCard(0,1,this.stage);
+    }
+
+    if (event.target.name=="start")
+    {
+      this.displayCard(0,this.stage);
+      stage.addEventListener("click",this);
+    }
+    
+
+  }
+
+
   
 }

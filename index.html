@@ -22,56 +22,92 @@
         <meta charset="utf-8" />
         <!-- <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        
         -->
+        
+        <style>
+          @font-face {
+            font-family: 'Fascinate Inline';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Fascinate-Inline'), url('fonts/fascinate.ttf') format('truetype');
+          }
+        </style>
         <title>Ferienhaus in Florida</title>
-        <script src="lib/jquery.js"></script>
-        <script src="lib/easeljs-0.7.0.min.js"></script>
+        
+        <script src="lib/preloadjs.js"></script>
+        <script src="lib/easeljs.js"></script>
+        <script src="lib/easeljs_cocoonjs_touchfix.js"></script>
         
         <!-- Game related includes -->
+        <script src="js/gamefunctions.js"></script>
+        <script src="js/gameshapes.js"></script>
         <script src="js/card.js"></script>
         <script src="data/cards.json"></script>
+        <script src="data/fascinate_font.json"></script>
         <script src="js/gamefield.js"></script>
         
         <script type="text/javascript">
                 
           var all_cards;
+          var stage;
+          var gamefield;
+          var preload;
+          
+          canvas = null;
+          global_fontsheet = null;
+          
+          
+          function gametick()
+          {
+             stage.update();
+          }
+
+          
+
+
           window.onload = function()
           {
+            function loadCompleted()
+            {
+              global_fontsheet = new createjs.SpriteSheet(Fascinate_Font);
+              gamefield.displayFrontscreen(stage);
+              /* Start the continous stage updates */
+              if (!createjs.Ticker.hasEventListener("tick"))
+              {
+                 createjs.Ticker.addEventListener("tick",gametick);
+              }
+            }
+            
+            preload = new createjs.LoadQueue(true);
+            preload.on("complete", loadCompleted, this);
+            preload.loadFile("img/fascinate.png");
+            
 
-                // Create a canvas and draw something in it.
+            // Create a canvas and draw something in it.
+            canvas = document.createElement("canvas"); /* bad global variable :) */
+            canvas.id="gamescreen";
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            document.body.appendChild(canvas);               
+            
+            stage = new createjs.Stage("gamescreen");
+            createjs.Touch.enable(stage);
+            
+            gamefield = new gamefield(preload, canvas.width, canvas.height, stage);
+            
+            window.onresize = function() {
+                var canvas = document.getElementById("gamescreen");
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gamefield.resize(canvas.width, canvas.height);
                 
-                var canvas = document.createElement("canvas");
-                canvas.id="gamescreen";
-                canvas.width = 800;
-                canvas.height = 480;
-                /*var canvasContext2D = canvas.getContext("2d");
-                canvasContext2D.fillStyle = "red";
-                canvasContext2D.fillRect(0, 0, canvas.width, canvas.height);
-                */
-                document.body.appendChild(canvas);               
-                var tag_left = new createjs.Bitmap("img/tag_left.svg");				  
-                var tag_right = new createjs.Bitmap("img/tag_right.svg");
-                
-                
-								stage = new createjs.Stage("gamescreen");
-                
-                gamefield = new gamefield();
-                gamefield.displayCard(0,stage);
-								stage.update();
-								
-                
-                
-								window.onresize = function() {
-				    				var canvas = document.getElementById("gamescreen");
-				    				canvas.width = window.innerWidth;
-				    				canvas.height = window.innerHeight;
-				    				stage.update();
-								}
-								
-								window.onresize();
-
+                //stage.update();
+            }
+            
+            window.onresize();
 				}
+        
 
 				
 				function changeOrientation() {

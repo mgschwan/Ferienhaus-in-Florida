@@ -8,21 +8,93 @@ function card(options) {
   this.bedrooms = options["bedrooms"];
   this.price = options["price"];
   this.image = new createjs.Bitmap(image_base_path+options["image"]);
-  
 }
+
 card.prototype.getName = function() { return this.villaname;}
 card.prototype.getPrice = function() { return this.price; }
-card.prototype.getImage = function() { return this.image; }
+
+card.prototype.getImage = function(width,height) { 
+    /* The size adjustment only works if the image is already loaded
+     * That is why preloadjs must be used
+     */
+    return scaleToFit(this.image, width, height);
+    
+}
 card.prototype.getBathrooms = function() { return this.bathrooms; }
 card.prototype.getBedrooms = function() { return this.bedrooms; }
 card.prototype.getPrice = function() { return this.price; }
 
+card.prototype.display = function (stage, width, height) {
+    stage.addChild(this.getImage(width, height));
+    
+    fontsize=parseInt(height/20);
+    fontsize_big=parseInt(1.2*height/20);
+    
+    var texts = [];
+    texts.push(new createjs.BitmapText(this.getName(),global_fontsheet).setTransform(width/100,height/50));
+    
+    //texts.push(new createjs.Text(this.getName(),"bold "+fontsize_big+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,height/50));
+    
+    texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,2*height/10));
+    texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,3*height/10));
+    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10));
+    
+    for (var t in texts)
+    {
+      var bounds = texts[t].getTransformedBounds();
+      stage.addChild(halfTrapezoid(1.4*bounds.width+bounds.height+20,bounds.height*1.4,"#333333").setTransform(0,bounds.y-bounds.height*0.2));
+      stage.addChild(texts[t]); 
+    }
+}
 
-function loadCards(jsondata) {
+card.prototype.displaySemi = function (stage, width, height) {
+    
+    var img = this.getImage(width,height);
+    img.mask = new createjs.Shape();
+    img.mask.graphics.beginFill("#fff").mt(width*0.6,0).lt(width*0.4,height).lt(width,height).lt(width,0).closePath();
+    stage.addChild(this.getImage(width, height));
+    var divider=new createjs.Shape();
+    divider.graphics.beginStroke("#fff").setStrokeStyle("10").mt(width*0.6,0).lt(width*0.4,height);
+    stage.addChild(divider);
+    
+    fontsize=parseInt(height/20);
+    fontsize_big=parseInt(1.2*height/20);
+    
+    var texts = [];
+    texts.push(new createjs.BitmapText(this.getName(),global_fontsheet));
+    var bounds = texts[texts.length-1].getBounds();
+    texts[texts.length-1].setTransform(width-bounds.width-3*width/100,height-bounds.height-height/50);
+    
+    //texts.push(new createjs.Text(this.getName(),"bold "+fontsize_big+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,height/50));
+    
+    texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    var w = texts[texts.length-1].getBounds().width;
+    texts[texts.length-1].setTransform(width-w-3*width/100,2*height/10);
+    texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    w = texts[texts.length-1].getBounds().width;
+    texts[texts.length-1].setTransform(width-w-3*width/100,3*height/10);
+    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    w = texts[texts.length-1].getBounds().width;
+    texts[texts.length-1].setTransform(width-w-3*width/100,4*height/10);
+    
+       
+    for (var t in texts)
+    {
+      var bounds = texts[t].getTransformedBounds();
+      stage.addChild(invertedHalfTrapezoid(1.4*bounds.width+bounds.height,bounds.height*1.4,"#333333").setTransform(width-(1.4*bounds.width+bounds.height),bounds.y-bounds.height*0.2));
+      stage.addChild(texts[t]); 
+    }
+}
+
+
+
+
+function loadCards(jsondata, preloadQueue) {
   var cards = [];
   
   for (var i = 0; i < jsondata.length; i++)
   {
+      preloadQueue.loadFile(image_base_path+jsondata[i]["image"]);
       cards.push(new card(jsondata[i]));
   }
   return cards;
