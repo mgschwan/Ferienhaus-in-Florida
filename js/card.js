@@ -7,11 +7,11 @@ function card(options) {
   this.bathrooms = options["bathrooms"];
   this.bedrooms = options["bedrooms"];
   this.price = options["price"];
+  this.boatingdistance = options["boatingdistance"];
   this.image = new createjs.Bitmap(image_base_path+options["image"]);
 }
 
 card.prototype.getName = function() { return this.villaname;}
-card.prototype.getPrice = function() { return this.price; }
 
 card.prototype.getImage = function(width,height) { 
     /* The size adjustment only works if the image is already loaded
@@ -23,6 +23,7 @@ card.prototype.getImage = function(width,height) {
 card.prototype.getBathrooms = function() { return this.bathrooms; }
 card.prototype.getBedrooms = function() { return this.bedrooms; }
 card.prototype.getPrice = function() { return this.price; }
+card.prototype.getBoatingDistance = function() { return this.boatingdistance; }
 
 card.prototype.display = function (stage, width, height) {
     stage.addChild(this.getImage(width, height));
@@ -37,7 +38,8 @@ card.prototype.display = function (stage, width, height) {
     
     texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,2*height/10));
     texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,3*height/10));
-    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10));
+    texts.push(new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10));
+    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,5*height/10));
     
     for (var t in texts)
     {
@@ -69,13 +71,19 @@ card.prototype.displaySemi = function (stage, width, height) {
     
     texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
     var w = texts[texts.length-1].getBounds().width;
-    texts[texts.length-1].setTransform(width-w-3*width/100,2*height/10);
+    texts[texts.length-1].setTransform(width-w-3*width/100,height-2*height/10);
+
     texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
     w = texts[texts.length-1].getBounds().width;
-    texts[texts.length-1].setTransform(width-w-3*width/100,3*height/10);
+    texts[texts.length-1].setTransform(width-w-3*width/100,height-3*height/10);
+
+    texts.push(new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    w = texts[texts.length-1].getBounds().width;
+    texts[texts.length-1].setTransform(width-w-3*width/100,height-4*height/10);
+
     texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
     w = texts[texts.length-1].getBounds().width;
-    texts[texts.length-1].setTransform(width-w-3*width/100,4*height/10);
+    texts[texts.length-1].setTransform(width-w-3*width/100,height-5*height/10);
     
        
     for (var t in texts)
