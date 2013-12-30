@@ -25,7 +25,7 @@ card.prototype.getBedrooms = function() { return this.bedrooms; }
 card.prototype.getPrice = function() { return this.price; }
 card.prototype.getBoatingDistance = function() { return this.boatingdistance; }
 
-card.prototype.display = function (stage, width, height) {
+card.prototype.display = function (stage, width, height, eventtarget) {
     stage.addChild(this.getImage(width, height));
     
     fontsize=parseInt(height/20);
@@ -36,10 +36,26 @@ card.prototype.display = function (stage, width, height) {
     
     //texts.push(new createjs.Text(this.getName(),"bold "+fontsize_big+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,height/50));
     
-    texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,2*height/10));
-    texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,3*height/10));
-    texts.push(new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10));
-    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,5*height/10));
+    var element;
+    element = new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,2*height/10);
+    element.set({"name":"bathrooms-selector"});
+    element.addEventListener("click",eventtarget);
+    texts.push(element);
+    
+    element = new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,3*height/10);
+    element.set({"name":"bedrooms-selector"});
+    element.addEventListener("click",eventtarget);
+    texts.push(element);
+    
+    element = new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10);
+    element.set({"name":"boatdistance-selector"});
+    element.addEventListener("click",eventtarget);
+    texts.push(element);
+    
+    element = new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,5*height/10);
+    element.set({"name":"price-selector"});
+    element.addEventListener("click",eventtarget);
+    texts.push(element);
     
     for (var t in texts)
     {
@@ -93,6 +109,27 @@ card.prototype.displaySemi = function (stage, width, height) {
       stage.addChild(texts[t]); 
     }
 }
+
+/* Card comparison methods to evaluate the winner */
+card.prototype.compare = function(otherCard, selector) {
+  var winner = "high"; /* Decide if higher or lower values win */
+  var tmp_other, tmp_self;
+  if (selector == "bathrooms-selector"){ tmp_self = this.getBathrooms(); tmp_other = otherCard.getBathrooms(); }
+  if (selector == "bedrooms-selector") { tmp_self = this.getBedrooms(); tmp_other = otherCard.getBedrooms(); }
+  if (selector == "boatdistance-selector") { tmp_self = this.getBoatingDistance(); tmp_other = otherCard.getBoatingDistance(); winner="low";}
+  if (selector == "price-selector") {tmp_self = this.getPrice(); tmp_other = otherCard.getPrice();}
+  
+  if (tmp_other == tmp_self) return 0;
+  if (tmp_other > tmp_self)
+  {
+    if (winner=="low") return -1;
+    return 1
+  }
+  
+  if (winner=="low") return 1;
+  return -1;
+}
+
 
 
 

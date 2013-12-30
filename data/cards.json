@@ -1,3 +1,5 @@
 cards_data = [{"name":"Villa Artistica","price":1100,"bedrooms":4,"bathrooms":3,"boatingdistance":7550, "image":"artistica-front.jpg"},
-              {"name":"Villa Amadeus","price":1200,"bedrooms":3.5,"bathrooms":3, "boatingdistance":7596, image:"capeharbourpearl-front.jpg"}
+              {"name":"Villa Amadeus","price":1200,"bedrooms":3.5,"bathrooms":3, "boatingdistance":7596, image:"capeharbourpearl-front.jpg"},
+              {"name":"Villa Amazing","price":1750,"bedrooms":5,"bathrooms":4, "boatingdistance":4515, image:"amazing-front.jpg"},
+              {"name":"Villa Aquamarin","price":1600,"bedrooms":4,"bathrooms":4, "boatingdistance":6442, image:"aquamarine-pool.jpg"}
              ];

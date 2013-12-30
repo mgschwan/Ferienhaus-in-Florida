@@ -46,6 +46,7 @@
         <script src="data/cards.json"></script>
         <script src="data/fascinate_font.json"></script>
         <script src="js/gamefield.js"></script>
+        <script src="js/feriengame.js"></script>
         
         <script type="text/javascript">
                 
@@ -53,7 +54,7 @@
           var stage;
           var gamefield;
           var preload;
-          
+          var game;
           canvas = null;
           global_fontsheet = null;
           
@@ -71,7 +72,8 @@
             function loadCompleted()
             {
               global_fontsheet = new createjs.SpriteSheet(Fascinate_Font);
-              gamefield.displayFrontscreen(stage);
+              game = new feriengame(gamefield,stage);
+              game.start()
               /* Start the continous stage updates */
               if (!createjs.Ticker.hasEventListener("tick"))
               {

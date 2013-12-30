@@ -12,31 +12,43 @@ function gamefield(preloadQueue, width, height, stage)
   
   this.stage = stage;
     
+  this.getCardCount = function() { return this.all_cards.length; }  
+    
   /* Display card number cardNr on stage */
-  this.displayCard = function(cardNr, stage) {
+  this.displayCard = function(cardNr, stage, eventtarget) {
     stage.removeAllChildren();
     var card = this.all_cards[cardNr];
-    card.display(stage, this.width, this.height);
+    card.display(stage, this.width, this.height, eventtarget);
   }
   
-  this.displayDualCard = function(cardNr1, cardNr2, stage) {
+  this.displayDualCard = function(cardNr1, cardNr2, winner, stage) {
     stage.removeAllChildren();
     var card1 = this.all_cards[cardNr1];
     var card2 = this.all_cards[cardNr2];
     card1.display(stage,this.width,this.height);
     card2.displaySemi(stage,this.width,this.height);
+
+
+    var wintext = new createjs.BitmapText(winner,global_fontsheet);
+    var bounds = wintext.getBounds();
+    wintext.setTransform(this.width/2-bounds.width/2,this.height/2-bounds.height/2);
+    stage.addChild(wintext);
   }
   
-  this.displayFrontscreen = function(stage) {
+  this.displayFrontscreen = function(stage, eventtarget) {
     stage.removeAllChildren();
     stage.addChild(scaleToFit(this.frontscreen, this.width, this.height));
     var button = scaleToFit(this.startbutton, this.width/5, this.height/5).setTransform(this.width/2-this.width/10,(1.3*this.height/2)-this.height/10);
     button.alpha=0.8;
     button.set({"name":"start"});
     button.removeAllEventListeners();
-    console.log("Add event listener");
-    button.addEventListener("click", this);
+    button.addEventListener("click", eventtarget);
     stage.addChild(button);
+  }
+  
+  this.evaluateWinner = function(cardNr1, cardNr2, selector)
+  {
+    return this.all_cards[cardNr1].compare(this.all_cards[cardNr2],selector);
   }
   
   
@@ -46,22 +58,5 @@ function gamefield(preloadQueue, width, height, stage)
     this.width = width;
     this.height = height;
   }
-
-  
-  this.handleEvent = function(event){
-    if (event.target.name==null){
-      this.displayDualCard(0,1,this.stage);
-    }
-
-    if (event.target.name=="start")
-    {
-      this.displayCard(0,this.stage);
-      stage.addEventListener("click",this);
-    }
-    
-
-  }
-
-
   
 }
