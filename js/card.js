@@ -26,8 +26,10 @@ card.prototype.getPrice = function() { return this.price; }
 card.prototype.getBoatingDistance = function() { return this.boatingdistance; }
 
 card.prototype.display = function (stage, width, height, eventtarget) {
-    stage.addChild(this.getImage(width, height));
-    
+    var img = this.getImage(width,height);
+    img.mask = null; /* Mask may have been set in displaySemi */
+    stage.addChild(img);
+   
     fontsize=parseInt(height/20);
     fontsize_big=parseInt(1.2*height/20);
     
@@ -60,7 +62,11 @@ card.prototype.display = function (stage, width, height, eventtarget) {
     for (var t in texts)
     {
       var bounds = texts[t].getTransformedBounds();
-      stage.addChild(halfTrapezoid(1.4*bounds.width+bounds.height+20,bounds.height*1.4,"#333333").setTransform(0,bounds.y-bounds.height*0.2));
+      var background = halfTrapezoid(1.4*bounds.width+bounds.height+20,bounds.height*1.4,"#333333").setTransform(0,bounds.y-bounds.height*0.2);
+      background.set({"name":texts[t].name});
+      background.addEventListener("click",eventtarget);
+      stage.addChild(background);
+      
       stage.addChild(texts[t]); 
     }
 }
@@ -117,7 +123,7 @@ card.prototype.compare = function(otherCard, selector) {
   if (selector == "bathrooms-selector"){ tmp_self = this.getBathrooms(); tmp_other = otherCard.getBathrooms(); }
   if (selector == "bedrooms-selector") { tmp_self = this.getBedrooms(); tmp_other = otherCard.getBedrooms(); }
   if (selector == "boatdistance-selector") { tmp_self = this.getBoatingDistance(); tmp_other = otherCard.getBoatingDistance(); winner="low";}
-  if (selector == "price-selector") {tmp_self = this.getPrice(); tmp_other = otherCard.getPrice();}
+  if (selector == "price-selector") {tmp_self = this.getPrice(); tmp_other = otherCard.getPrice(); winner="low";}
   
   if (tmp_other == tmp_self) return 0;
   if (tmp_other > tmp_self)
