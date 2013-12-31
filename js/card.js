@@ -1,4 +1,5 @@
 var image_base_path="img/villa/";
+var card_font = "Fascinate Inline Regular";
 
 function card(options) {
   
@@ -39,22 +40,22 @@ card.prototype.display = function (stage, width, height, eventtarget) {
     //texts.push(new createjs.Text(this.getName(),"bold "+fontsize_big+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,height/50));
     
     var element;
-    element = new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,2*height/10);
+    element = new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px "+card_font,"#e7e7e7").setTransform(width/100,2*height/10);
     element.set({"name":"bathrooms-selector"});
     element.addEventListener("click",eventtarget);
     texts.push(element);
     
-    element = new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,3*height/10);
+    element = new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px "+card_font,"#e7e7e7").setTransform(width/100,3*height/10);
     element.set({"name":"bedrooms-selector"});
     element.addEventListener("click",eventtarget);
     texts.push(element);
     
-    element = new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,4*height/10);
+    element = new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px "+card_font,"#e7e7e7").setTransform(width/100,4*height/10);
     element.set({"name":"boatdistance-selector"});
     element.addEventListener("click",eventtarget);
     texts.push(element);
     
-    element = new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,5*height/10);
+    element = new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px "+card_font,"#e7e7e7").setTransform(width/100,5*height/10);
     element.set({"name":"price-selector"});
     element.addEventListener("click",eventtarget);
     texts.push(element);
@@ -91,19 +92,19 @@ card.prototype.displaySemi = function (stage, width, height) {
     
     //texts.push(new createjs.Text(this.getName(),"bold "+fontsize_big+"px 'Fascinate Inline'","#e7e7e7").setTransform(width/100,height/50));
     
-    texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    texts.push(new createjs.Text("Bathrooms: "+this.getBathrooms(),"bold "+fontsize+"px "+card_font,"#e7e7e7"));
     var w = texts[texts.length-1].getBounds().width;
     texts[texts.length-1].setTransform(width-w-3*width/100,height-2*height/10);
 
-    texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    texts.push(new createjs.Text("Bedrooms: "+this.getBedrooms(),"bold "+fontsize+"px "+card_font,"#e7e7e7"));
     w = texts[texts.length-1].getBounds().width;
     texts[texts.length-1].setTransform(width-w-3*width/100,height-3*height/10);
 
-    texts.push(new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    texts.push(new createjs.Text("Gulf distance: "+this.getBoatingDistance(),"bold "+fontsize+"px "+card_font,"#e7e7e7"));
     w = texts[texts.length-1].getBounds().width;
     texts[texts.length-1].setTransform(width-w-3*width/100,height-4*height/10);
 
-    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px 'Fascinate Inline'","#e7e7e7"));
+    texts.push(new createjs.Text("Price: "+this.getPrice(),"bold "+fontsize+"px "+card_font,"#e7e7e7"));
     w = texts[texts.length-1].getBounds().width;
     texts[texts.length-1].setTransform(width-w-3*width/100,height-5*height/10);
     

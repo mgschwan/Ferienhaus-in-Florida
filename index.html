@@ -27,10 +27,10 @@
         
         <style>
           @font-face {
-            font-family: 'Fascinate Inline';
+            font-family: 'Fascinate Inline Regular';
             font-style: normal;
             font-weight: 400;
-            src: local('Fascinate-Inline'), url('fonts/fascinate.ttf') format('truetype');
+            src: url('fonts/Fascinate Inline Regular.ttf') format('truetype');
           }
         </style>
         <title>Ferienhaus in Florida</title>
@@ -91,7 +91,10 @@
             canvas.id="gamescreen";
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            document.body.appendChild(canvas);               
+            
+            
+            document.body.appendChild(canvas);   
+                        
             
             stage = new createjs.Stage("gamescreen");
             createjs.Touch.enable(stage);
